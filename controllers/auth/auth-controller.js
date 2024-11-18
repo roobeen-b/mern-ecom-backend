@@ -62,6 +62,7 @@ const loginUser = async (req, res) => {
         id: checkUser._id,
         role: checkUser.role,
         email: checkUser.email,
+        username: checkUser.userName,
       },
       process.env.JWT_SECRET_KEY,
       {
@@ -81,6 +82,7 @@ const loginUser = async (req, res) => {
           id: checkUser._id,
           email: checkUser.email,
           role: checkUser.role,
+          username: checkUser.userName,
         },
       });
   } catch (error) {
