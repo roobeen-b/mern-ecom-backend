@@ -63,7 +63,7 @@ const loginUser = async (req, res) => {
         role: checkUser.role,
         email: checkUser.email,
       },
-      "JWT_SECRET_KEY",
+      process.env.JWT_SECRET_KEY,
       {
         expiresIn: "60m",
       }
@@ -109,7 +109,7 @@ const authMiddleware = async (req, res, next) => {
   }
 
   try {
-    const decodedToken = jwt.verify(token, "JWT_SECRET_KEY");
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = decodedToken;
     next();
   } catch (error) {
