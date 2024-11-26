@@ -1,23 +1,22 @@
 const generatePaypalAccessToken = async () => {
   try {
-    console.log(process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_CLIENT_SECRET);
-    let bodyData = `client_id=${process.env.PAYPAL_CLIENT_ID}&client_secret=${process.env.PAYPAL_CLIENT_SECRET}&grant_type=client_credentials`;
-    console.log(bodyData, "bodydata");
+    const authString = `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`;
+    const base64Auth = Buffer.from(authString).toString("base64");
     const res = await fetch(
       "https://api-m.sandbox.paypal.com/v1/oauth2/token",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${base64Auth}`,
         },
-        body: bodyData,
+        body: "grant_type=client_credentials",
       }
     );
     const result = await res.json();
-    console.log(result, "resultltl");
     return result.access_token;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };

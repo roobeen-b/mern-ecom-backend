@@ -43,14 +43,13 @@ const createOrder = async (req, res) => {
     };
 
     try {
-      // const accessToken = await generatePaypalAccessToken();
-      // console.log(accessToken);
+      const accessToken = await generatePaypalAccessToken();
       fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "PayPal-Request-Id": uuidv4(),
-          Authorization: `Bearer ${"A21AALs0zlhob7miQgOaHIHVcAhT2bOq6mqP3WE23nUn0Wr-Hd3XjFbD844ugRDRsedX_TKYHEu9qCjIPc8yiabiy0c20x0XA"}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(create_payment_json),
       })
