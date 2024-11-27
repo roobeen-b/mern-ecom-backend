@@ -35,8 +35,8 @@ const createOrder = async (req, res) => {
       payment_source: {
         paypal: {
           experience_context: {
-            return_url: "http://localhost:5173/shopping/paypal-return",
-            cancel_url: "http://localhost:5173/shopping/paypal-cancel",
+            return_url: `${process.env.CLIENT_UI_URL}/shopping/paypal-return`,
+            cancel_url: `${process.env.CLIENT_UI_URL}/shopping/paypal-cancel`,
           },
         },
       },
