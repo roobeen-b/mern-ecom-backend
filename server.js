@@ -20,9 +20,7 @@ const productReviewRouter = require("./routes/shop/product-review-routes");
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
 mongoose
-  .connect(
-    `mongodb+srv://rubinbaidhya:${process.env.MONGO_DB_PASSWORD}@cluster0.9i61h.mongodb.net/`
-  )
+  .connect(`${process.env.MONGO_DB_URL}`)
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.log(error));
 
@@ -32,7 +30,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_UI_URL,
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
