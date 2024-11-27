@@ -70,21 +70,33 @@ const loginUser = async (req, res) => {
       }
     );
 
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.ENVIRONMENT === "production",
-      })
-      .json({
-        success: true,
-        message: "Login successful",
-        user: {
-          id: checkUser._id,
-          email: checkUser.email,
-          role: checkUser.role,
-          username: checkUser.userName,
-        },
-      });
+    // res
+    //   .cookie("token", token, {
+    //     httpOnly: true,
+    //     secure: process.env.ENVIRONMENT === "production",
+    //   })
+    //   .json({
+    //     success: true,
+    //     message: "Login successful",
+    //     user: {
+    //       id: checkUser._id,
+    //       email: checkUser.email,
+    //       role: checkUser.role,
+    //       username: checkUser.userName,
+    //     },
+    //   });
+
+    res.status(200).json({
+      success: true,
+      token: token,
+      message: "Login successful",
+      user: {
+        id: checkUser._id,
+        email: checkUser.email,
+        role: checkUser.role,
+        username: checkUser.userName,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -101,8 +113,30 @@ const logoutUser = (req, res) => {
   });
 };
 
+// const authMiddleware = async (req, res, next) => {
+//   const token = req.cookies.token;
+//   if (!token) {
+//     return res.status(401).json({
+//       success: false,
+//       message: "Unauthorized user",
+//     });
+//   }
+
+//   try {
+//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+//     req.user = decodedToken;
+//     next();
+//   } catch (error) {
+//     res.status(401).json({
+//       success: false,
+//       message: "Unauthorized user",
+//     });
+//   }
+// };
+
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({
       success: false,
